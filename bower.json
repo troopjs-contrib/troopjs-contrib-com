@@ -1,0 +1,28 @@
+{
+  "name": "troopjs-contrib-dom",
+  "version": "0.0.0",
+  "moduleType": [
+    "amd"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "assets"
+  ],
+  "dependencies": {
+    "requirejs": ">=2.1.14",
+    "troopjs": "3.0.0-pr.2+fa7fcdb",
+    "poly": "^0.6",
+    "when": "3.4.2",
+    "jquery": "^2",
+    "requirejs-text": "~2.0.12"
+  },
+  "resolutions": {
+    "when": "3.4.2",
+    "requirejs": ">=2.1.14",
+    "requirejs-text": "~2.0.12"
+  }
+}
