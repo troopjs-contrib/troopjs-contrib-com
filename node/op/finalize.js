@@ -4,7 +4,7 @@ define(function () {
 	return function() {
 		var me = this;
 
-		me[PHASE] = "finalize";
+		me[PHASE] = "finalizing";
 
 		return me
 			.signal("finalize")

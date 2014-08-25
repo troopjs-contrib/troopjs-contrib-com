@@ -1,13 +1,13 @@
 define([
 	"troopjs-core/component/base",
-	"./runner/sequence",
 	"./config",
+	"./runner/sequence",
 	"./op/start",
 	"./op/stop",
 	"./op/ready",
 	"./op/complete",
 	"when"
-], function (Component, runner, config, start, stop, ready, complete, when) {
+], function (Component, config, runner, start, stop, ready, complete, when) {
 
 	/**
 	 * Base component for widgets attached to the node
