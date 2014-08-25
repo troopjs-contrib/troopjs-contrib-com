@@ -1,7 +1,7 @@
 define([
 	"./config",
-	"./initialize",
-	"./finalize",
+	"./op/initialize",
+	"./op/finalize",
 	"require",
 	"when"
 ], function (config, initialize, finalize, localRequire, when) {

@@ -1,5 +1,5 @@
 define([
-	"../component/widget"
+	"../widget"
 ], function (Widget) {
 	return Widget;
 });

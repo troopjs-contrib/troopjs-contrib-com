@@ -1,6 +1,6 @@
 define([
-	"./config",
-	"./weave"
+	"../config",
+	"../weave"
 ], function(config, weave) {
 	var CHILDREN = config.children;
 
