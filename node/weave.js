@@ -1,9 +1,10 @@
 define([
 	"./config",
+	"./initialize",
+	"./finalize",
 	"require",
 	"when"
-], function (config, localRequire, when) {
-	var PHASE = "phase";
+], function (config, initialize, finalize, localRequire, when) {
 	var TYPE = config.type;
 	var CHILDREN = config.children;
 	var COMPLETED = config.completed;
@@ -24,7 +25,6 @@ define([
 		// Calculate completed if needed
 		completed = completed === true || node.hasOwnProperty(COMPLETED);
 
-
 		return when
 			.promise(function (resolve, reject) {
 				// Use a local version of require to load the class. The node
@@ -38,13 +38,7 @@ define([
 			})
 			// Signal initialize
 			.tap(function (component) {
-				component[PHASE] = "initialize";
-
-				return component
-					.signal("initialize")
-					.then(function () {
-						component[PHASE] = "initialized";
-					});
+				return initialize.call(component);
 			})
 			// Recursively weave children
 			.tap(function () {
@@ -55,13 +49,7 @@ define([
 			// If this node or any ancestor is completed we should just finalize right away
 			.tap(function (component) {
 				if (completed) {
-					component[PHASE] = "finalize";
-
-					return component
-						.signal("finalize")
-						.then(function () {
-							component[PHASE] = "finalized";
-						});
+					return finalize.call(component);
 				}
 			})
 			.catch(isRequireError, function (error) {

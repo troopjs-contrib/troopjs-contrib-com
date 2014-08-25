@@ -4,8 +4,10 @@ define([
 	"../node/config",
 	"../node/start",
 	"../node/stop",
+	"../node/ready",
+	"../node/complete",
 	"when"
-], function (Component, runner, config, start, stop, when) {
+], function (Component, runner, config, start, stop, ready, complete, when) {
 
 	/**
 	 * Base component for widgets attached to the node
@@ -23,7 +25,6 @@ define([
 	var PARENT = "parent";
 	var COMPONENT = "component";
 	var COMPLETE = "complete";
-	var READY = "ready";
 
 	/**
 	 * Creates a new node widget
@@ -114,25 +115,27 @@ define([
 		"yield": function () {
 			var me = this;
 			var node = me[NODE];
-			var nodes = node[CHILDREN] || (node[CHILDREN] = []);
+			var children = node[CHILDREN] || (node[CHILDREN] = []);
 
 			return when.unfold(function (index) {
-				var node;
+				var child;
 
 				do {
-					node = nodes[ index++ ];
+					child = children[ index++ ];
 				}
-				while (node !== UNDEFINED && node.hasOwnProperty(COMPLETED));
+				while (child !== UNDEFINED && child.hasOwnProperty(COMPLETED));
 
-				return [ node, index ];
+				return [ child, index ];
 			}, function (index) {
-				return index >= nodes[LENGTH];
-			}, function (node) {
-				if (node !== UNDEFINED) {
-					return start
-						.call(node.component())
-						.tap(function () {
-							return this.signal(READY);
+				return index >= children[LENGTH];
+			}, function (child) {
+				if (child !== UNDEFINED) {
+					return when(child[COMPONENT])
+						.tap(function (component) {
+							return start.call(component);
+						})
+						.tap(function (component) {
+							return ready.call(component);
 						});
 				}
 			}, 0);
@@ -141,39 +144,39 @@ define([
 		"finish": function (completed) {
 			var me = this;
 			var node = me[NODE];
-			var nodes = node[CHILDREN] || (node[CHILDREN] = []);
+			var children = node[CHILDREN] || (node[CHILDREN] = []);
 
 			return when
 				.unfold(function (index) {
-					var node;
+					var child;
 
 					do {
-						node = nodes[ index++ ];
+						child = children[ index++ ];
 					}
-					while (node !== UNDEFINED && node.hasOwnProperty(COMPLETED));
+					while (child !== UNDEFINED && child.hasOwnProperty(COMPLETED));
 
-					return [ node, index ];
+					return [ child, index ];
 				}, function (index) {
-					return index >= nodes[LENGTH];
-				}, function (node) {
-					if (node !== UNDEFINED) {
-						return node
+					return index >= children[LENGTH];
+				}, function (child) {
+					if (child !== UNDEFINED) {
+						return child
 							.component()
 							.finish();
 					}
 				}, 0)
 				.tap(function () {
 					if (completed && !node.hasOwnProperty(COMPLETED)) {
-						return me.signal(COMPLETE, node[COMPLETED] = completed);
+						return complete.call(me, node[COMPLETED] = completed);
 					}
 				})
-				.then(function () {
+				.tap(function () {
 					return stop.call(me);
 				});
 		},
 
 		"sig/complete": function (completed) {
-			return this.trigger(COMPLETE, completed);
+			return this.trigger("complete", completed);
 		},
 
 		/**

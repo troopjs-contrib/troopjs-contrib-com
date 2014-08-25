@@ -1,4 +1,4 @@
-define(function () {
+define([ "./finalize" ], function (finalize) {
 	var PHASE = "phase";
 
 	return function() {
@@ -9,13 +9,7 @@ define(function () {
 		return me
 			.signal("stop")
 			.then(function() {
-				me[PHASE] = "finalize";
-
-				return me
-					.signal("finalize")
-					.then(function () {
-						return me[PHASE] = "finalized";
-					});
+				return finalize.call(me);
 			});
 	}
 });

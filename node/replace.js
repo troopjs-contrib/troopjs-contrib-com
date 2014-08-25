@@ -15,10 +15,10 @@ define([
 		var parent = me.parent();
 
 		// Get children
-		var nodes = parent[CHILDREN];
+		var children = parent[CHILDREN];
 
-		// Add node to nodes
-		nodes.splice(nodes.indexOf(me), 1, node);
+		// Add node to children
+		children.splice(children.indexOf(me), 1, node);
 
 		// Call and return weave
 		return weave.call(parent.component(), node, parent);
