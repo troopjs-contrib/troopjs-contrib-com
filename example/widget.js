@@ -6,15 +6,7 @@ define([
 	"jquery"
 ], function (Factory, Widget, Component, config, $) {
 
-	/**
-	 * Base component for widgets attached to the node
-	 * structure.
-	 *
-	 * @class com.component.widget
-	 * @extend com.component.widget
-	 */
 	var $ELEMENT = "$element";
-	var ELEMENTS = "elements";
 	var NODE = "node";
 	var TYPE = config.type;
 	var ID = "id";
@@ -45,22 +37,12 @@ define([
 			// Extract type
 			var type = node[TYPE];
 
-			// Create element
-			var $element = $("<div></div>");
-
-			// Add attributes to $element
-			$element.attr({
-				"id": id,
-				"data-type": type
-			});
-
-			/**
-			 * Child elements
-			 * @property {HTMLElement[]} elements
-			 * @readonly
-			 * @protected
-			 */
-			me[ELEMENTS] = $element.get();
+			// Create element and add attributes
+			var $element = $("<div></div>")
+				.attr({
+					"id": id,
+					"data-type": type
+				});
 
 			// Append $element to parent[$ELEMENT]
 			if (parent && parent.hasOwnProperty($ELEMENT)) {
@@ -79,7 +61,7 @@ define([
 			 * @inheritdoc
 			 */
 			"sig/finalize": function () {
-				$(this[ELEMENTS]).remove();
+				this[$ELEMENT].remove();
 			}
 		});
 });
