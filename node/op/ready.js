@@ -1,5 +1,5 @@
 define(function () {
-	return function() {
+	return function ready() {
 		return this.signal("ready");
 	}
 });

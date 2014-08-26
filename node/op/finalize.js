@@ -1,7 +1,7 @@
 define(function () {
 	var PHASE = "phase";
 
-	return function() {
+	return function finalize() {
 		var me = this;
 
 		me[PHASE] = "finalizing";

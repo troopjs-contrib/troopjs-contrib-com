@@ -1,7 +1,7 @@
 define([ "./finalize" ], function (finalize) {
 	var PHASE = "phase";
 
-	return function() {
+	return function stop() {
 		var me = this;
 
 		me[PHASE] = "stopping";
