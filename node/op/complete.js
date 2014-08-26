@@ -1,5 +1,5 @@
 define(function () {
-	return function complete() {
-		return this.signal("complete");
+	return function complete(completed) {
+		return this.signal("complete", completed);
 	}
 });
