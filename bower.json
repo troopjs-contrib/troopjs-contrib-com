@@ -1,6 +1,5 @@
 {
   "name": "troopjs-contrib-dom",
-  "version": "0.0.0",
   "moduleType": [
     "amd"
   ],
