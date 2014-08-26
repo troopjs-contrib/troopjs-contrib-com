@@ -1,8 +1,8 @@
 define([
 	"troopjs-dom/component/widget",
 	"../node/weave",
-	"../node/op/start"
-], function (Widget, weave, start) {
+	"../node/op/ready"
+], function (Widget, weave, ready) {
 	var $ELEMENT = "$element";
 
 	return Widget.extend({
@@ -21,8 +21,8 @@ define([
 					// Append to me
 					widget[$ELEMENT].appendTo(me[$ELEMENT]);
 
-					// Start and return
-					return start.call(widget);
+					// Signal and return
+					return ready.call(widget);
 				});
 		}
 	});

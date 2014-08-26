@@ -7,8 +7,8 @@ define([
 ], function (Factory, Widget, Component, config, $) {
 
 	var $ELEMENT = "$element";
-	var NODE = "node";
 	var TYPE = config.type;
+	var COMPONENT = config.component;
 	var ID = "id";
 
 	return Factory(Component,
@@ -21,16 +21,6 @@ define([
 		 * @inheritdoc
 		 */
 		function (node, parent) {
-			var me = this;
-
-			/**
-			 * Data node
-			 * @property {Object} node
-			 * @readonly
-			 * @protected
-			 */
-			me[NODE] = node;
-
 			// Set ID if it does not already exist
 			var id = node[ID] = node[ID] || new Date().getTime();
 
@@ -44,9 +34,9 @@ define([
 					"data-type": type
 				});
 
-			// Append $element to parent[$ELEMENT]
-			if (parent && parent.hasOwnProperty($ELEMENT)) {
-				$element.appendTo(parent[$ELEMENT]);
+			// Append $element to parent[COMPONENT]()[$ELEMENT]
+			if (parent) {
+				$element.appendTo(parent[COMPONENT]()[$ELEMENT]);
 			}
 
 			// Mutate arguments to next constructor

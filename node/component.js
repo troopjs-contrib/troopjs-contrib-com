@@ -21,10 +21,9 @@ define([
 	var LENGTH = "length";
 	var CHILDREN = config.children;
 	var COMPLETED = config.completed;
-	var NODE = "node";
-	var PARENT = "parent";
-	var COMPONENT = "component";
-	var COMPLETE = "complete";
+	var NODE = config.node;
+	var PARENT = config.parent;
+	var COMPONENT = config.component;
 
 	/**
 	 * Creates a new node widget
@@ -36,14 +35,6 @@ define([
 	return Component.extend(function (node, parent) {
 		var me = this;
 
-		/**
-		 * Data node
-		 * @property {Object} node
-		 * @readonly
-		 * @protected
-		 */
-		me[NODE] = node;
-
 		// Store `parent` on node
 		node[PARENT] = function () {
 			return parent;
@@ -53,6 +44,14 @@ define([
 		node[COMPONENT] = function () {
 			return me;
 		};
+
+		/**
+		 * Data node
+		 * @property {Object} node
+		 * @readonly
+		 * @protected
+		 */
+		me[NODE] = node;
 	}, {
 		/**
 		 * Simulates jQuery.trigger, but traverses node structure
@@ -73,15 +72,15 @@ define([
 
 			return when.iterate(
 				function (node) {
-					return node.parent();
+					return node[PARENT]();
 				},
 				function (node) {
 					return bubble === false || node === UNDEFINED;
 				},
 				function (node) {
-					var component = node.component();
+					var component = node[COMPONENT]();
 
-					return component.emit.apply(component, args).then(function (result) {
+					return component.emit.apply(component, args).tap(function (result) {
 						bubble = result !== false;
 					});
 				},
@@ -130,13 +129,7 @@ define([
 				return index >= children[LENGTH];
 			}, function (child) {
 				if (child !== UNDEFINED) {
-					return when(child[COMPONENT])
-						.tap(function (component) {
-							return start.call(component);
-						})
-						.tap(function (component) {
-							return ready.call(component);
-						});
+					return ready.call(child[COMPONENT]());
 				}
 			}, 0);
 		},
@@ -160,9 +153,7 @@ define([
 					return index >= children[LENGTH];
 				}, function (child) {
 					if (child !== UNDEFINED) {
-						return child
-							.component()
-							.finish();
+						return child[COMPONENT]().finish();
 					}
 				}, 0)
 				.tap(function () {

@@ -36,7 +36,8 @@ require({
 			"text": "requirejs-text/text"
 		},
 		"node/weave": {
-			"root": "example/root/widget"
+			"root": "example/root/widget",
+			"dialog": "example/dialog/widget"
 		}
 	},
 

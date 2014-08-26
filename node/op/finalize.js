@@ -1,15 +1,22 @@
-define(function () {
+define([ "when" ], function (when) {
 	var PHASE = "phase";
 
 	return function finalize() {
 		var me = this;
 
-		me[PHASE] = "finalizing";
+		return when(me[PHASE], function (phase) {
+			if (phase === "stopped") {
+				me[PHASE] = "finalizing";
 
-		return me
-			.signal("finalize")
-			.tap(function() {
-				me[PHASE] = "finalized";
-			});
+				return me
+					.signal("finalize")
+					.then(function() {
+						return me[PHASE] = "finalized";
+					});
+			}
+			else {
+				return phase;
+			}
+		});
 	}
 });

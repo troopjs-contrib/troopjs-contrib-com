@@ -1,15 +1,25 @@
-define(function () {
+define([
+	"./initialize",
+	"when"
+], function (initialize, when) {
 	var PHASE = "phase";
 
 	return function start() {
 		var me = this;
 
-		me[PHASE] = "starting";
+		return when(initialize.call(me), function (phase) {
+			if (phase === "initialized") {
+				me[PHASE] = "starting";
 
-		return me
-			.signal("start")
-			.tap(function() {
-				me[PHASE] = "started";
-			});
+				return me
+					.signal("start")
+					.then(function() {
+						return me[PHASE] = "started";
+					});
+			}
+			else {
+				return phase;
+			}
+		});
 	}
 });

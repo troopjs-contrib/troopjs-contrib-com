@@ -12,14 +12,14 @@ define([ "when" ], function (when) {
 	var IMMEDIATE_PROPAGATION_STOPPED = "immediatePropagationStopped";
 	var PROPAGATION_STOPPED = "propagationStopped";
 
-	function Event() {
+	function COMEvent() {
 		var me = this;
 
 		me[IMMEDIATE_PROPAGATION_STOPPED] = FALSE;
 		me[PROPAGATION_STOPPED] = FALSE;
 	}
 
-	Event.prototype = {
+	COMEvent.prototype = {
 		"isImmediatePropagationStopped": function () {
 			return this[IMMEDIATE_PROPAGATION_STOPPED];
 		},
@@ -42,7 +42,7 @@ define([ "when" ], function (when) {
 	};
 
 	return function sequence(event, handlers, args) {
-		var _event = new Event();
+		var _event = new COMEvent();
 		var _args = [ _event ];
 		var candidates = [];
 		var candidate;

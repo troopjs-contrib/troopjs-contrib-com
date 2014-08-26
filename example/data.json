@@ -1,4 +1,6 @@
 {
 	"@type": "root",
-	"@children": []
+	"@children": [{
+		"@type": "dialog"
+	}]
 }
