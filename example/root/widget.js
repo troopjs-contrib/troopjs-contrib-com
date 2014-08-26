@@ -10,6 +10,9 @@ define([
 			return this
 				.yield()
 				.then(function () {
+					return me.finish();
+				})
+				.then(function () {
 					me.log("stop wait");
 				});
 		}

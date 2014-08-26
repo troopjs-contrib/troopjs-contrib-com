@@ -11,7 +11,7 @@ define([
 					.text("click me")
 					.click(resolve)
 					.appendTo(me.$element);
-			})
+			});
 		}
 	});
 });
