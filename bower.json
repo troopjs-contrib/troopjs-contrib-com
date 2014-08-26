@@ -10,7 +10,9 @@
     "bower_components",
     "test",
     "tests",
-    "assets"
+    "assets",
+    "example",
+    "examples"
   ],
   "dependencies": {
     "requirejs": ">=2.1.14",
