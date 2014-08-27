@@ -1,7 +1,7 @@
 define([
 	"troopjs-dom/component/widget",
-	"../node/weave",
-	"../node/op/ready"
+	"../loom/weave",
+	"../component/signal/ready"
 ], function (Widget, weave, ready) {
 	var $ELEMENT = "$element";
 
