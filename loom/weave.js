@@ -5,6 +5,7 @@ define([
 	"require",
 	"when"
 ], function (config, initialize, finalize, localRequire, when) {
+	var DEFAULT = config.default;
 	var TYPE = config.type;
 	var CHILDREN = config.children;
 	var COMPLETED = config.completed;
@@ -30,7 +31,7 @@ define([
 				// Use a local version of require to load the class. The node
 				// type has to either be a fully qualified module name or a map
 				// entry has to be added to the require configuration
-				localRequire([ node[TYPE] ], resolve, reject);
+				localRequire([ node[TYPE] || DEFAULT ], resolve, reject);
 			})
 			// Create instance
 			.then(function (Component) {

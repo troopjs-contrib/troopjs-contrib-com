@@ -8,6 +8,7 @@ define([
 		"completed": "@completed",
 		"node": "node",
 		"parent": "parent",
-		"component": "component"
+		"component": "component",
+		"default": "../component"
 	}, module.config());
 });
