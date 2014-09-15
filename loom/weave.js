@@ -1,7 +1,7 @@
 define([
 	"../config",
-	"../component/signal/initialize",
-	"../component/signal/finalize",
+	"../signal/initialize",
+	"../signal/finalize",
 	"require",
 	"when"
 ], function (config, initialize, finalize, localRequire, when) {
