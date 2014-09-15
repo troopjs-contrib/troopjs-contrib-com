@@ -1,6 +1,6 @@
 define([
 	"troopjs-core/component/base",
-	"config",
+	"./config",
 	"./runner/sequence",
 	"./signal/start",
 	"./signal/stop",
