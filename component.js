@@ -13,8 +13,8 @@ define([
 	 * Base component for widgets attached to the node
 	 * structure.
 	 *
-	 * @class com.component.gadget
-	 * @extend dom.component.widget
+	 * @class com.component
+	 * @extend core.component.base
 	 */
 
 	var UNDEFINED;
@@ -28,8 +28,8 @@ define([
 	/**
 	 * Creates a new node widget
 	 * @method constructor
-	 * @param {Object} node Node containing data for this widget
-	 * @param {Object} parent Parent node for node
+	 * @param {Object} node Component node
+	 * @param {Object} parent Component parent node
 	 * @inheritdoc
 	 */
 	return Component.extend(function (node, parent) {
@@ -54,7 +54,7 @@ define([
 		me[NODE] = node;
 	}, {
 		/**
-		 * Simulates jQuery.trigger, but traverses node structure
+		 * Simulates jQuery.trigger, but traverses component structure
 		 * rather than the DOM structure.
 		 * @returns {Promise}
 		 */
@@ -106,7 +106,7 @@ define([
 		},
 
 		/**
-		 * Yields control to child component widgets.
+		 * Yields control to child components.
 		 * Control is passed in sequence.
 		 * @returns {Promise}
 		 * @fires sig/ready
