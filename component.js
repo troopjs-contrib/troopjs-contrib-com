@@ -1,5 +1,6 @@
 define([
 	"troopjs-core/component/base",
+	"./constructor",
 	"./config",
 	"./runner/sequence",
 	"./signal/start",
@@ -7,7 +8,7 @@ define([
 	"./signal/ready",
 	"./signal/complete",
 	"when"
-], function (Component, config, runner, start, stop, ready, complete, when) {
+], function (Component, constructor, config, runner, start, stop, ready, complete, when) {
 
 	/**
 	 * Base component for widgets attached to the node
@@ -25,34 +26,7 @@ define([
 	var PARENT = config.parent;
 	var COMPONENT = config.component;
 
-	/**
-	 * Creates a new node widget
-	 * @method constructor
-	 * @param {Object} node Component node
-	 * @param {Object} parent Component parent node
-	 * @inheritdoc
-	 */
-	return Component.extend(function (node, parent) {
-		var me = this;
-
-		// Store `parent` on node
-		node[PARENT] = function () {
-			return parent;
-		};
-
-		// Store `component` on node
-		node[COMPONENT] = function () {
-			return me;
-		};
-
-		/**
-		 * Data node
-		 * @property {Object} node
-		 * @readonly
-		 * @protected
-		 */
-		me[NODE] = node;
-	}, {
+	return Component.extend(constructor, {
 		/**
 		 * Simulates jQuery.trigger, but traverses component structure
 		 * rather than the DOM structure.
