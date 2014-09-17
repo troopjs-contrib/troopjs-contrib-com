@@ -16,8 +16,8 @@ define([
 		var me = this;
 		var parent = me[PARENT]();
 
-		// Get children
-		var children = parent[CHILDREN];
+		// Get or create parent[CHILDREN]
+		var children = parent[CHILDREN] || (parent[CHILDREN] = []);
 
 		// Add node to children
 		children.splice(children.indexOf(me), 1, node);
