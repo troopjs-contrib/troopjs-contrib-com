@@ -184,6 +184,14 @@ define([
 			 * @handler
 			 * @inheritdoc
 			 */
+			"sig/task": function (task) {
+				return this.trigger("task", task);
+			},
+
+			/**
+			 * @handler
+			 * @inheritdoc
+			 */
 			"sig/finalize": function () {
 				return this.trigger("finalize");
 			}
