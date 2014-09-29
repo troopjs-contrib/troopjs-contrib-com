@@ -4,7 +4,10 @@ define([
 ], function (module, merge) {
 	return merge.call({
 		"type": "@type",
-		"components": "@children",
-		"completed": "@completed"
+		"children": "@children",
+		"completed": "@completed",
+		"node": "node",
+		"parent": "parent",
+		"component": "component"
 	}, module.config());
 });

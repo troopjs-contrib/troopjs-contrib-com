@@ -1,7 +1,7 @@
 define([
-	"./config",
-	"./initialize",
-	"./finalize",
+	"../config",
+	"../signal/initialize",
+	"../signal/finalize",
 	"require",
 	"when"
 ], function (config, initialize, finalize, localRequire, when) {
@@ -52,7 +52,7 @@ define([
 					return finalize.call(component);
 				}
 			})
-			.catch(isRequireError, function (error) {
+			.otherwise(isRequireError, function (error) {
 				me.error("Unable to load module(s) %o in context %s because of %s. Related node was %o", error.requireModules, error.contextName, error.requireType, node);
 			});
 	}

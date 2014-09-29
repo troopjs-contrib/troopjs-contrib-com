@@ -35,8 +35,9 @@ require({
 			"json": "troopjs-requirejs/json",
 			"text": "requirejs-text/text"
 		},
-		"node/weave": {
-			"root": "example/root/widget"
+		"loom/weave": {
+			"root": "example/root/widget",
+			"dialog": "example/dialog/widget"
 		}
 	},
 
