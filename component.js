@@ -137,6 +137,7 @@ define([
 			},
 
 			"finish": function (completed) {
+				var callee = arguments.callee;
 				var me = this;
 				var node = me[NODE];
 				var children = node[CHILDREN] || (node[CHILDREN] = []);
@@ -155,7 +156,7 @@ define([
 						return index >= children[LENGTH];
 					}, function (child) {
 						if (child !== UNDEFINED) {
-							return child[COMPONENT]().finish();
+							return callee.call(child[COMPONENT]());
 						}
 					}, 0)
 					.tap(function () {
