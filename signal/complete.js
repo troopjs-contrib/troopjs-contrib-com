@@ -2,13 +2,24 @@ define([
 	"./start",
 	"when"
 ], function (start, when) {
-	return function complete(completed) {
-		var me = this;
+	var ARRAY_PUSH = Array.prototype.push;
 
-		return when(start.call(me), function (phase) {
+	return function complete() {
+		var me = this;
+		var args = arguments;
+
+		return when(start.apply(me, args), function (phase) {
+			var _args;
+
 			if (phase === "started") {
+				// Let `_args` be `[ "complete" ]`
+				_args = [ "complete" ];
+
+				// Push `args` on `_args`
+				ARRAY_PUSH.apply(_args, args);
+
 				return me
-					.signal("complete", completed)
+					.signal.apply(me, _args)
 					.yield(phase);
 			}
 			else {
