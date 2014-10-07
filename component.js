@@ -5,9 +5,8 @@ define([
 	"./signal/start",
 	"./signal/stop",
 	"./signal/ready",
-	"./signal/complete",
 	"when"
-], function (Component, config, runner, start, stop, ready, complete, when) {
+], function (Component, config, runner, start, stop, ready, when) {
 
 	/**
 	 * Base component for widgets attached to the node
@@ -56,7 +55,7 @@ define([
 		},
 		{
 			/**
-			 * Simulates jQuery.trigger, but traverses component structure
+			 * Simulates jQuery.trigger, but traverses node structure
 			 * rather than the DOM structure.
 			 * @returns {Promise}
 			 */
@@ -116,11 +115,16 @@ define([
 			"yield": function () {
 				var me = this;
 				var node = me[NODE];
-				var children = node[CHILDREN] || (node[CHILDREN] = []);
+
+				// Get or create `children`
+				var children = node.hasOwnProperty(CHILDREN)
+					? node[CHILDREN]
+					: node[CHILDREN] = [];
 
 				return when.unfold(function (index) {
 					var child;
 
+					// Find next child without a `COMPLETED` property
 					do {
 						child = children[ index++ ];
 					}
@@ -128,6 +132,7 @@ define([
 
 					return [ child, index ];
 				}, function (index) {
+					// Check if we're out of bounds. Note that we allow _adding_ to `children` during `unfold`
 					return index >= children[LENGTH];
 				}, function (child) {
 					if (child !== UNDEFINED) {
@@ -136,16 +141,22 @@ define([
 				}, 0);
 			},
 
-			"finish": function (completed) {
-				var callee = arguments.callee;
+			"complete": function (completed) {
+				var args = arguments;
+				var callee = args.callee;
 				var me = this;
 				var node = me[NODE];
-				var children = node[CHILDREN] || (node[CHILDREN] = []);
+
+				// Get or create `children`
+				var children = node.hasOwnProperty(CHILDREN)
+					? node[CHILDREN]
+					: node[CHILDREN] = [];
 
 				return when
 					.unfold(function (index) {
 						var child;
 
+						// Find next child without a `COMPLETED` property
 						do {
 							child = children[ index++ ];
 						}
@@ -153,6 +164,7 @@ define([
 
 						return [ child, index ];
 					}, function (index) {
+						// Check if we're out of bounds. Note that we allow _adding_ to `children` during `unfold`
 						return index >= children[LENGTH];
 					}, function (child) {
 						if (child !== UNDEFINED) {
@@ -160,12 +172,9 @@ define([
 						}
 					}, 0)
 					.tap(function () {
-						if (completed && !node.hasOwnProperty(COMPLETED)) {
-							return complete.call(me, node[COMPLETED] = completed);
-						}
-					})
-					.tap(function () {
-						return stop.call(me);
+						return args[LENGTH] > 0
+							? stop.call(me, node[COMPLETED] = completed)
+							: stop.call(me);
 					});
 			},
 
