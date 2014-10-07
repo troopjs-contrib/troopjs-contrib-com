@@ -9,7 +9,7 @@ define([
 
 		return when(initialize.call(me), function (phase) {
 			if (phase === "initialized") {
-				me[PHASE] = "starting";
+				me[PHASE] = "start";
 
 				return me
 					.signal("start")

@@ -1,15 +1,15 @@
 define([
-	"./finalize",
-	"when"
-], function (finalize, when) {
+	"./start",
+	"when",
+], function (start, when) {
 	var PHASE = "phase";
 
 	return function stop() {
 		var me = this;
 
-		return when(me[PHASE], function (phase) {
+		return when(start.call(me), function (phase) {
 			if (phase === "started") {
-				me[PHASE] = "stopping";
+				me[PHASE] = "stop";
 
 				return me
 					.signal("stop")
@@ -20,9 +20,6 @@ define([
 			else {
 				return phase;
 			}
-		})
-		.then(function () {
-			return finalize.call(me);
 		});
 	}
 });

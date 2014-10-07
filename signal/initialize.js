@@ -7,7 +7,7 @@ define([ "when" ], function (when) {
 
 		return when(me[PHASE], function (phase) {
 			if (phase === UNDEFINED) {
-				me[PHASE] = "initializing";
+				me[PHASE] = "initialize";
 
 				return me
 					.signal("initialize")

@@ -1,12 +1,15 @@
-define([ "when" ], function (when) {
+define([
+	"./stop",
+	"when"
+], function (stop, when) {
 	var PHASE = "phase";
 
 	return function finalize() {
 		var me = this;
 
-		return when(me[PHASE], function (phase) {
+		return when(stop.call(me), function (phase) {
 			if (phase === "stopped") {
-				me[PHASE] = "finalizing";
+				me[PHASE] = "finalize";
 
 				return me
 					.signal("finalize")

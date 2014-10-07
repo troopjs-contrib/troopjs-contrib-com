@@ -6,14 +6,14 @@ define([
 		var me = this;
 
 		return when(start.call(me), function (phase) {
-				if (phase === "started") {
-					return me
-						.signal("ready")
-						.yield(phase);
-				}
-				else {
-					return phase;
-				}
-			});
+			if (phase === "started") {
+				return me
+					.signal("ready")
+					.yield(phase);
+			}
+			else {
+				return phase;
+			}
+		});
 	}
 });
