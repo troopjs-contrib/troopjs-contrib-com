@@ -10,7 +10,7 @@ define([
 			return this
 				.yield()
 				.then(function () {
-					return me.finish();
+					return me.complete();
 				})
 				.then(function () {
 					me.log("stop wait");

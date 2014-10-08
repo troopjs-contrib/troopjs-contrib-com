@@ -1,16 +1,26 @@
-define([ "when" ], function (when) {
+define([
+	"./stop",
+	"when"
+], function (stop, when) {
+	var ARRAY_PUSH = Array.prototype.push;
 	var PHASE = "phase";
 
 	return function finalize() {
 		var me = this;
+		var args = arguments;
 
-		return when(me[PHASE], function (phase) {
+		return when(stop.apply(me, args), function (phase) {
+			var _args;
 			if (phase === "stopped") {
-				me[PHASE] = "finalizing";
+				// Let `me[PHASE]` be `"finalize"`
+				// Let `_args` be `[ "finalize" ]`
+				// Push `args` on `_args`
+				ARRAY_PUSH.apply(_args = [ me[PHASE] = "finalize" ], args);
 
 				return me
-					.signal("finalize")
+					.signal.apply(me, _args)
 					.then(function() {
+						// Let `me[PHASE]` be `"finalized"`
 						return me[PHASE] = "finalized";
 					});
 			}
