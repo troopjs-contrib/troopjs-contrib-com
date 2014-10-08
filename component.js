@@ -3,10 +3,10 @@ define([
 	"./config",
 	"./runner/sequence",
 	"./signal/start",
-	"./signal/stop",
 	"./signal/ready",
+	"./signal/finalize",
 	"when"
-], function (Component, config, runner, start, stop, ready, when) {
+], function (Component, config, runner, start, ready, finalize, when) {
 
 	/**
 	 * Base component for widgets attached to the node
@@ -179,8 +179,8 @@ define([
 					}, 0)
 					.tap(function () {
 						return args[LENGTH] > 0
-							? stop.call(me, node[COMPLETED] = completed)
-							: stop.call(me);
+							? finalize.call(me, node[COMPLETED] = completed)
+							: finalize.call(me);
 					});
 			},
 
