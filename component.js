@@ -141,6 +141,12 @@ define([
 				}, 0);
 			},
 
+			/**
+			 * Completes children and self
+			 * @param {*} completed
+			 * @return {Promise}
+			 * @fires sig/complete
+			 */
 			"complete": function (completed) {
 				var args = arguments;
 				var callee = args.callee;
@@ -178,6 +184,10 @@ define([
 					});
 			},
 
+			/**
+			 * @handler
+			 * @param {*} completed
+			 */
 			"sig/complete": function (completed) {
 				return this.trigger("complete", completed);
 			},
