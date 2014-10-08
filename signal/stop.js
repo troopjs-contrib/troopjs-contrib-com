@@ -13,12 +13,10 @@ define([
 			var _args;
 
 			if (phase === "started") {
-				// Let `_args` be `[ "stop" ]`
 				// Let `me[PHASE]` be `"stop"`
-				_args = [ me[PHASE] = "stop" ];
-
+				// Let `_args` be `[ "stop" ]`
 				// Push `args` on `_args`
-				ARRAY_PUSH.apply(_args, args);
+				ARRAY_PUSH.apply(_args = [ me[PHASE] = "stop" ], args);
 
 				return me
 					.signal.apply(me, _args)

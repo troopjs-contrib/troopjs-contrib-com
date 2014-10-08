@@ -13,10 +13,8 @@ define([
 
 			if (phase === "started") {
 				// Let `_args` be `[ "complete" ]`
-				_args = [ "complete" ];
-
 				// Push `args` on `_args`
-				ARRAY_PUSH.apply(_args, args);
+				ARRAY_PUSH.apply(_args = [ "complete" ], args);
 
 				return me
 					.signal.apply(me, _args)
