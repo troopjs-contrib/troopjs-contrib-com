@@ -182,38 +182,6 @@ define([
 							? finalize.call(me, node[COMPLETED] = completed)
 							: finalize.call(me);
 					});
-			},
-
-			/**
-			 * @handler
-			 * @param {*} completed
-			 */
-			"sig/complete": function (completed) {
-				return this.trigger("complete", completed);
-			},
-
-			/**
-			 * @handler
-			 * @inheritdoc
-			 */
-			"sig/initialize": function () {
-				return this.trigger("initialize");
-			},
-
-			/**
-			 * @handler
-			 * @inheritdoc
-			 */
-			"sig/task": function (task) {
-				return this.trigger("task", task);
-			},
-
-			/**
-			 * @handler
-			 * @inheritdoc
-			 */
-			"sig/finalize": function () {
-				return this.trigger("finalize");
 			}
 		}
 	);
