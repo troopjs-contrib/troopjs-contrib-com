@@ -1,16 +1,17 @@
 define([
-	"troopjs-dom/component/widget",
-	"../loom/weave",
+	"troopjs-dom/component",
+	"troopjs-core/pubsub/hub",
+	"../weave",
 	"../signal/ready"
-], function (Widget, weave, ready) {
+], function (Widget, hub, weave, ready) {
 	var $ELEMENT = "$element";
 
 	return Widget.extend({
 		"sig/start": function () {
 			var me = this;
 
-			return me
-				.publish("ajax", {
+			return hub
+				.emit("ajax", {
 					"url": "./data.json"
 				})
 				.spread(function (data) {

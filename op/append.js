@@ -1,6 +1,6 @@
 define([
 	"../config",
-	"../loom/weave"
+	"../weave"
 ], function(config, weave) {
 	var NODE = config.node;
 	var CHILDREN = config.children;

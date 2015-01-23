@@ -1,9 +1,9 @@
 define([
-	"../config",
-	"../signal/initialize",
-	"../signal/finalize",
+	"./config",
+	"troopjs-core/component/signal/initialize",
+	"troopjs-core/component/signal/finalize",
 	"require",
-	"when"
+	"when/when"
 ], function (config, initialize, finalize, localRequire, when) {
 	var TYPE = config.type;
 	var CHILDREN = config.children;

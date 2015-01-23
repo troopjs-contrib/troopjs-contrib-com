@@ -1,4 +1,4 @@
-define([ "when" ], function (when) {
+define([ "when/when" ], function (when) {
 	var UNDEFINED;
 	var FALSE = false;
 	var TRUE = true;

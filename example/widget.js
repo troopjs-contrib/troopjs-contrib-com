@@ -1,6 +1,6 @@
 define([
-	"troopjs-compose/mixin/factory",
-	"troopjs-dom/component/widget",
+	"troopjs-compose/factory",
+	"troopjs-dom/component",
 	"../component",
 	"../config",
 	"jquery"

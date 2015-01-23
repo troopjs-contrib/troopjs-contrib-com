@@ -1,6 +1,6 @@
 define([
 	"module",
-	"troopjs-util/merge"
+	"mu-merge/main"
 ], function (module, merge) {
 	return merge.call({
 		"type": "@type",
