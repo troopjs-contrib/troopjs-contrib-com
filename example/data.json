@@ -1,6 +1,0 @@
-{
-	"@type": "root",
-	"@children": [{
-		"@type": "dialog"
-	}]
-}

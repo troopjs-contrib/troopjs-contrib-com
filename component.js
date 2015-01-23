@@ -1,12 +1,11 @@
 define([
 	"troopjs-core/component/emitter",
+  "troopjs-core/component/signal/start",
+  "troopjs-core/component/signal/finalize",
 	"./config",
 	"./runner",
-	"troopjs-core/component/signal/start",
-	"./signal/ready",
-	"troopjs-core/component/signal/finalize",
 	"when/when"
-], function (Component, config, runner, start, ready, finalize, when) {
+], function (Component, start, finalize, config, runner, when) {
 
 	/**
 	 * Base component for widgets attached to the node
@@ -104,41 +103,6 @@ define([
 				};
 
 				return me.emit.apply(me, args);
-			},
-
-			/**
-			 * Yields control to child components.
-			 * Control is passed in sequence.
-			 * @returns {Promise}
-			 * @fires sig/ready
-			 */
-			"yield": function () {
-				var me = this;
-				var node = me[NODE];
-
-				// Get or create `children`
-				var children = node.hasOwnProperty(CHILDREN)
-					? node[CHILDREN]
-					: node[CHILDREN] = [];
-
-				return when.unfold(function (index) {
-					var child;
-
-					// Find next child without a `COMPLETED` property
-					do {
-						child = children[ index++ ];
-					}
-					while (child !== UNDEFINED && child.hasOwnProperty(COMPLETED));
-
-					return [ child, index ];
-				}, function (index) {
-					// Check if we're out of bounds. Note that we allow _adding_ to `children` during `unfold`
-					return index >= children[LENGTH];
-				}, function (child) {
-					if (child !== UNDEFINED) {
-						return ready.call(child[COMPONENT]());
-					}
-				}, 0);
 			},
 
 			/**
