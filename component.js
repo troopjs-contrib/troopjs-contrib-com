@@ -1,14 +1,14 @@
 define([
 	"troopjs-core/component/emitter",
-  "troopjs-core/component/signal/start",
-  "troopjs-core/component/signal/finalize",
+	"troopjs-core/component/signal/start",
+	"troopjs-core/component/signal/finalize",
 	"./config",
 	"./runner",
 	"when/when"
 ], function (Component, start, finalize, config, runner, when) {
 
 	/**
-	 * Base component for widgets attached to the node
+	 * Base component for components attached to the node
 	 * structure.
 	 *
 	 * @class com.component
@@ -25,7 +25,7 @@ define([
 
 	return Component.extend(
 		/**
-		 * Creates a new node widget
+		 * Creates a new node component
 		 * @method constructor
 		 * @param {Object} node Component node
 		 * @param {Object} parent Component parent node
