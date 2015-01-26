@@ -1,11 +1,10 @@
 define([
 	"troopjs-core/component/emitter",
-	"troopjs-core/component/signal/start",
-	"troopjs-core/component/signal/finalize",
+	"./signal/finalize",
 	"./config",
 	"./runner",
 	"when/when"
-], function (Component, start, finalize, config, runner, when) {
+], function (Component, finalize, config, runner, when) {
 
 	/**
 	 * Base component for components attached to the node

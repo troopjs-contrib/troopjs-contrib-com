@@ -1,7 +1,7 @@
 define([
 	"./config",
 	"troopjs-core/component/signal/initialize",
-	"troopjs-core/component/signal/finalize",
+	"./signal/finalize",
 	"require",
 	"when/when"
 ], function (config, initialize, finalize, localRequire, when) {
@@ -49,7 +49,7 @@ define([
 			// If this node or any ancestor is completed we should just finalize right away
 			.tap(function (component) {
 				if (completed) {
-					return finalize.call(component);
+					return finalize.call(component, completed);
 				}
 			})
 			.otherwise(isRequireError, function (error) {

@@ -14,7 +14,7 @@ define([
 			var _args;
 
 			if (phase === STARTED) {
-				// Let `_args` be `[ "complete" ]`
+				// Let `_args` be `[ "sig/complete" ]`
 				// Push `args` on `_args`
 				ARRAY_PUSH.apply(_args = [ "sig/complete" ], args);
 
