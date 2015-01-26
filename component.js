@@ -1,10 +1,9 @@
 define([
 	"troopjs-core/component/emitter",
-	"./signal/finalize",
 	"./config",
 	"./runner",
 	"when/when"
-], function (Component, finalize, config, runner, when) {
+], function (Component, config, runner, when) {
 
 	/**
 	 * Base component for components attached to the node
@@ -15,9 +14,6 @@ define([
 	 */
 
 	var UNDEFINED;
-	var LENGTH = "length";
-	var CHILDREN = config.children;
-	var COMPLETED = config.completed;
 	var NODE = config.node;
 	var PARENT = config.parent;
 	var COMPONENT = config.component;
@@ -102,49 +98,6 @@ define([
 				};
 
 				return me.emit.apply(me, args);
-			},
-
-			/**
-			 * Completes children and self
-			 * @param {*} completed
-			 * @return {Promise}
-			 * @fires sig/complete
-			 */
-			"complete": function (completed) {
-				var args = arguments;
-				var callee = args.callee;
-				var me = this;
-				var node = me[NODE];
-
-				// Get or create `children`
-				var children = node.hasOwnProperty(CHILDREN)
-					? node[CHILDREN]
-					: node[CHILDREN] = [];
-
-				return when
-					.unfold(function (index) {
-						var child;
-
-						// Find next child without a `COMPLETED` property
-						do {
-							child = children[ index++ ];
-						}
-						while (child !== UNDEFINED && child.hasOwnProperty(COMPLETED));
-
-						return [ child, index ];
-					}, function (index) {
-						// Check if we're out of bounds. Note that we allow _adding_ to `children` during `unfold`
-						return index >= children[LENGTH];
-					}, function (child) {
-						if (child !== UNDEFINED) {
-							return callee.call(child[COMPONENT]());
-						}
-					}, 0)
-					.tap(function () {
-						return args[LENGTH] > 0
-							? finalize.call(me, node[COMPLETED] = completed)
-							: finalize.call(me);
-					});
 			}
 		}
 	);
