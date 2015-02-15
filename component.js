@@ -1,9 +1,10 @@
 define([
 	"troopjs-core/component/emitter",
+  "troopjs-core/config",
 	"./config",
-	"./runner",
+	"./executor",
 	"when/when"
-], function (Component, config, runner, when) {
+], function (Component, core_config, com_config, executor, when) {
 
 	/**
 	 * Base component for components attached to the node
@@ -14,9 +15,12 @@ define([
 	 */
 
 	var UNDEFINED;
-	var NODE = config.node;
-	var PARENT = config.parent;
-	var COMPONENT = config.component;
+	var NODE = com_config.node;
+	var PARENT = com_config.parent;
+	var COMPONENT = com_config.component;
+  var TYPE = core_config.emitter.type;
+  var EXECUTOR = core_config.emitter.executor;
+  var TARGET = "target";
 
 	return Component.extend(
 		/**
@@ -59,11 +63,10 @@ define([
 				var bubble = true;
 
 				// Change first argument so we can use custom run logic
-				args[0] = {
-					"type": type,
-					"runner": runner,
-					"target": me
-				};
+				var event = args[0] = {};
+        event[TYPE] = type;
+        event[EXECUTOR] = executor;
+        event[TARGET] = me;
 
 				return when.iterate(
 					function (node) {
@@ -91,11 +94,10 @@ define([
 				var args = arguments;
 
 				// Change first argument so we can use custom run logic
-				args[0] = {
-					"type": type,
-					"runner": runner,
-					"target": me
-				};
+				var event = args[0] = {};
+        event[TYPE] = type;
+        event[EXECUTOR] = executor;
+        event[TARGET] = me;
 
 				return me.emit.apply(me, args);
 			}
