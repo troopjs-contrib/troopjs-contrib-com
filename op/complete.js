@@ -3,6 +3,7 @@ define([
   "troopjs-core/component/signal/finalize",
   "when/when"
 ], function (config, finalize, when) {
+  "use strict";
 
   var UNDEFINED;
   var LENGTH = "length";
@@ -18,7 +19,7 @@ define([
    * @return {Promise}
    * @triggers complete
    */
-  return function complete(completed) {
+  function complete(completed) {
     var args = arguments;
     var me = this;
     var node = me[NODE];
@@ -56,4 +57,6 @@ define([
         return finalize.call(me);
       });
   }
+
+  return complete;
 });

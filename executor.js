@@ -2,74 +2,80 @@ define([
   "troopjs-core/config",
   "when/when"
 ], function (core_config, when) {
-	var UNDEFINED;
-	var FALSE = false;
-	var TRUE = true;
-	var ARRAY_PUSH = Array.prototype.push;
-	var TYPE = core_config.emitter.type;
-	var HEAD = core_config.emitter.head;
-	var NEXT = core_config.emitter.next;
-	var TARGET = "target";
-	var IMMEDIATE_PROPAGATION_STOPPED = "immediatePropagationStopped";
-	var PROPAGATION_STOPPED = "propagationStopped";
+  "use strict";
 
-	function COMEvent() {
-		var me = this;
+  var UNDEFINED;
+  var FALSE = false;
+  var TRUE = true;
+  var TYPE = core_config.emitter.type;
+  var HEAD = core_config.emitter.head;
+  var NEXT = core_config.emitter.next;
+  var TARGET = "target";
+  var IMMEDIATE_PROPAGATION_STOPPED = "immediatePropagationStopped";
+  var PROPAGATION_STOPPED = "propagationStopped";
 
-		me[IMMEDIATE_PROPAGATION_STOPPED] = FALSE;
-		me[PROPAGATION_STOPPED] = FALSE;
-	}
+  function COMEvent() {
+    var me = this;
 
-	COMEvent.prototype = {
-		"isImmediatePropagationStopped": function () {
-			return this[IMMEDIATE_PROPAGATION_STOPPED];
-		},
+    me[IMMEDIATE_PROPAGATION_STOPPED] = FALSE;
+    me[PROPAGATION_STOPPED] = FALSE;
+  }
 
-		"isPropagationStopped": function () {
-			return this[PROPAGATION_STOPPED];
-		},
+  COMEvent.prototype = {
+    "isImmediatePropagationStopped": function () {
+      return this[IMMEDIATE_PROPAGATION_STOPPED];
+    },
 
-		"stopImmediatePropagation": function () {
-			var me = this;
+    "isPropagationStopped": function () {
+      return this[PROPAGATION_STOPPED];
+    },
 
-			me[IMMEDIATE_PROPAGATION_STOPPED] = TRUE;
+    "stopImmediatePropagation": function () {
+      var me = this;
 
-			me.stopPropagation();
-		},
+      me[IMMEDIATE_PROPAGATION_STOPPED] = TRUE;
 
-		"stopPropagation": function () {
-			this[PROPAGATION_STOPPED] = TRUE;
-		}
-	};
+      me.stopPropagation();
+    },
 
-	return function sequence(event, handlers, args) {
-		var _event = new COMEvent();
-		var _args = [ _event ];
-		var _handlers = [];
+    "stopPropagation": function () {
+      this[PROPAGATION_STOPPED] = TRUE;
+    }
+  };
+
+  return function (event, handlers, args) {
+    var length = args.length;
+    var handler;
+    var _event = new COMEvent();
+    var _args = new Array(length);
+    var _handlers = [];
     var _handlersCount = 0;
-		var handler;
 
-		_event[TARGET] = event[TARGET];
-		_event[TYPE] = event[TYPE];
+    while (length) {
+      _args[length] = args[--length];
+    }
 
-		ARRAY_PUSH.apply(_args, args);
+    _args[0] = _event;
 
-		for (handler = handlers[HEAD]; handler !== UNDEFINED; handler = handler[NEXT]) {
-			_handlers[_handlersCount++] = handler;
-		}
+    _event[TARGET] = event[TARGET];
+    _event[TYPE] = event[TYPE];
 
-		return when.reduce(_handlers, function (result, _handler) {
-			if (!_event.isImmediatePropagationStopped()) {
-				result = when(_handler.handle(_args), function (_result) {
-					if (_result === FALSE) {
-						_event.stopPropagation();
-					}
+    for (handler = handlers[HEAD]; handler !== UNDEFINED; handler = handler[NEXT]) {
+      _handlers[_handlersCount++] = handler;
+    }
 
-					return !_event.isPropagationStopped();
-				});
-			}
+    return when.reduce(_handlers, function (result, _handler) {
+      if (!_event.isImmediatePropagationStopped()) {
+        result = when(_handler.handle(_args), function (_result) {
+          if (_result === FALSE) {
+            _event.stopPropagation();
+          }
 
-			return result;
-		}, UNDEFINED);
-	}
+          return !_event.isPropagationStopped();
+        });
+      }
+
+      return result;
+    }, UNDEFINED);
+  };
 });

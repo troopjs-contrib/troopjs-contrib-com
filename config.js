@@ -1,13 +1,15 @@
 define([
-	"module",
-	"mu-merge/main"
+  "module",
+  "mu-merge/main"
 ], function (module, merge) {
-	return merge.call({
-		"type": "@type",
-		"children": "@children",
-		"completed": "@completed",
-		"node": "node",
-		"parent": "parent",
-		"component": "component"
-	}, module.config());
+  "use strict";
+
+  return merge.call({
+    "type": "@type",
+    "children": "@children",
+    "completed": "@completed",
+    "node": "node",
+    "parent": "parent",
+    "component": "component"
+  }, module.config());
 });

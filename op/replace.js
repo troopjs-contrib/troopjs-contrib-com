@@ -1,28 +1,32 @@
 define([
-	"../config",
-	"../weave"
+  "../config",
+  "../weave"
 ], function(config, weave) {
-	var PARENT = config.parent;
-	var COMPONENT = config.component;
-	var CHILDREN = config.children;
+  "use strict";
 
-	/**
-	 * Replaces component
-	 * @param {Object} component
-	 * @returns {Promise}
-	 * @ignore
-	 */
-	return function replace(node) {
-		var me = this;
-		var parent = me[PARENT]();
+  var PARENT = config.parent;
+  var COMPONENT = config.component;
+  var CHILDREN = config.children;
 
-		// Get or create parent[CHILDREN]
-		var children = parent[CHILDREN] || (parent[CHILDREN] = []);
+  /**
+   * Replaces component
+   * @param {Object} component
+   * @returns {Promise}
+   * @ignore
+   */
+  return function (node) {
+    var me = this;
+    var parent = me[PARENT]();
 
-		// Add node to children
-		children.splice(children.indexOf(me), 1, node);
+    // Get or create parent[CHILDREN]
+    var children = parent.hasOwnProperty(CHILDREN)
+      ? parent[CHILDREN]
+      : parent[CHILDREN] = [];
 
-		// Call and return weave
-		return weave.call(parent[COMPONENT](), node, parent);
-	}
+    // Add node to children
+    children.splice(children.indexOf(me), 1, node);
+
+    // Call and return weave
+    return weave.call(parent[COMPONENT](), node, parent);
+  };
 });

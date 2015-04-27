@@ -2,19 +2,25 @@ define([
   "../config",
   "when/when"
 ], function (config, when) {
-  var ARRAY_SLICE = Array.prototype.slice;
+  "use strict";
+
   var NODE = config.node;
   var CHILDREN = config.children;
   var COMPONENT = config.component;
   var COMPLETED = config.completed;
 
-  return function each(method) {
+  return function (method) {
     var me = this;
+    var length = arguments.length;
+    var args = new Array(length);
     var node = me[NODE];
-    var args = ARRAY_SLICE.call(arguments, 1);
     var children = node.hasOwnProperty(CHILDREN)
       ? node[CHILDREN]
       : node[CHILDREN] = [];
+
+    while(length--) {
+      args[length] = arguments[length];
+    }
 
     return when.map(children, function (child) {
       var component = child[COMPONENT]();
@@ -25,5 +31,5 @@ define([
           .apply(component, args)
           .yield(component);
     });
-  }
+  };
 });

@@ -12,7 +12,8 @@
   ],
   "dependencies": {
     "troopjs": "^3",
-    "when": "^3.4"
+    "when": "^3.4",
+    "mu-error": "^0"
   },
   "devDependencies": {
     "requirejs": "^2.1"
