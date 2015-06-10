@@ -126,7 +126,20 @@ define([
         event[EXECUTOR] = executor;
         event[TARGET] = me;
 
-        return me.emit.apply(me, args);
+        return me.emit.apply(me, args)
+          .then(function(_result) {
+            var result = _result;
+
+            if (arguments[LENGTH] > 0 && _result !== UNDEFINED) {
+              if (_result.hasOwnProperty(LENGTH)) {
+                result = _result
+              } else {
+                result = [_result];
+              }
+
+              return result;
+            }
+          });
       }
     }
   );
