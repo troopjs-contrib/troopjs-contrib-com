@@ -71,7 +71,7 @@ define([
             _event.stopPropagation();
           }
 
-          return !_event.isPropagationStopped();
+          return _result;
         });
       }
 

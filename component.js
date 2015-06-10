@@ -16,6 +16,7 @@ define([
    */
 
   var UNDEFINED;
+  var FALSE = false;
   var NODE = com_config.node;
   var PARENT = com_config.parent;
   var COMPONENT = com_config.component;
@@ -64,6 +65,7 @@ define([
         var length = arguments[LENGTH];
         var args = new Array(length);
         var bubble = true;
+        var result;
 
         while (length-- > 1) {
           args[length] = arguments[length];
@@ -75,21 +77,34 @@ define([
         event[EXECUTOR] = executor;
         event[TARGET] = me;
 
-        return when.iterate(
-          function (node) {
-            return node[PARENT]();
-          },
-          function (node) {
-            return bubble === false || node === UNDEFINED;
-          },
-          function (node) {
-            var component = node[COMPONENT]();
+        return when
+          .iterate(
+            function(node) {
+              return node[PARENT]();
+            },
+            function(node) {
+              return bubble === FALSE || node === UNDEFINED;
+            },
+            function(node) {
+              var component = node[COMPONENT]();
 
-            return component.emit.apply(component, args).tap(function (result) {
-              bubble = result !== false;
-            });
-          },
-          me[NODE]);
+              return component.emit.apply(component, args)
+                .tap(function(_result) {
+                  if (arguments[LENGTH] > 0 && _result !== UNDEFINED) {
+                    if (_result === FALSE) {
+                      result = [bubble = FALSE];
+                    } else if (_result.hasOwnProperty(LENGTH)) {
+                      result = _result;
+                    } else {
+                      result = [_result];
+                    }
+                  }
+                });
+            },
+            me[NODE])
+          .then(function() {
+            return result;
+          });
       },
 
       /**
