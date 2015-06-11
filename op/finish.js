@@ -35,7 +35,8 @@ define([
       ? node[CHILDREN]
       : node[CHILDREN] = [];
 
-    return unfold.apply(me, args)
+    return unfold
+      .apply(me, args)
       .tap(function() {
         var result;
 
