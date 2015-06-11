@@ -1,8 +1,8 @@
 define([
-  "../config",
   "troopjs-core/component/signal/finalize",
-  "when/when"
-], function (config, finalize, when) {
+  "../config",
+  "../util/unfold"
+], function(finalize, config, unfold) {
   "use strict";
 
   var UNDEFINED;
@@ -20,41 +20,29 @@ define([
    * @triggers complete
    */
   function complete(completed) {
-    var args = arguments;
     var me = this;
     var node = me[NODE];
+    var length = arguments[LENGTH];
+    var trigger = length > 0;
+    var args = [complete];
+
+    while (length--) {
+      args[length + 1] = _arguments[length];
+    }
 
     // Get or create `children`
     var children = node.hasOwnProperty(CHILDREN)
       ? node[CHILDREN]
       : node[CHILDREN] = [];
 
-    return when
-      .unfold(function (index) {
-        var child;
-
-        // Find next child without a `COMPLETED` property
-        do {
-          child = children[ index++ ];
-        }
-        while (child !== UNDEFINED && child.hasOwnProperty(COMPLETED));
-
-        return [ child, index ];
-      }, function (index) {
-        // Check if we're out of bounds. Note that we allow _adding_ to `children` during `unfold`
-        return index >= children[LENGTH];
-      }, function (child) {
-        if (child !== UNDEFINED) {
-          return complete.call(child[COMPONENT]());
-        }
-      }, 0)
-      .tap(function () {
-        return args[LENGTH] > 0
+    return unfold.call(me, complete)
+      .tap(function() {
+        return trigger
           ? me.trigger(COMPLETE, node[COMPLETED] = completed)
           : me.trigger(COMPLETE);
       })
-      .tap(function () {
-        return finalize.call(me);
+      .tap(function() {
+        return finalize.apply(me, args);
       });
   }
 
