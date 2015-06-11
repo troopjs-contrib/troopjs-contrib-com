@@ -17,7 +17,7 @@ define([
     var children = node.hasOwnProperty(CHILDREN)
       ? node[CHILDREN]
       : node[CHILDREN] = [];
-    var length = arguments[LENGTH] - 1;
+    var length = arguments[LENGTH];
     var args = new Array(length);
 
     while (length--) {

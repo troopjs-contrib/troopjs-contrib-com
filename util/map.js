@@ -11,14 +11,14 @@ define([
 
   return function(method) {
     var me = this;
-    var length = arguments.length - 1;
-    var args = new Array(length);
     var node = me[NODE];
     var children = node.hasOwnProperty(CHILDREN)
       ? node[CHILDREN].filter(function(child) {
         return !child.hasOwnProperty(COMPLETED);
       })
       : node[CHILDREN] = [];
+    var length = arguments.length - 1;
+    var args = new Array(length);
 
     while (length--) {
       args[length] = arguments[length + 1];
