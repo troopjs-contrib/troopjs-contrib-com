@@ -7,6 +7,7 @@ define([
   var NODE = config.node;
   var CHILDREN = config.children;
   var COMPONENT = config.component;
+  var COMPLETED = config.completed;
 
   return function(method) {
     var me = this;
@@ -14,7 +15,9 @@ define([
     var args = new Array(length);
     var node = me[NODE];
     var children = node.hasOwnProperty(CHILDREN)
-      ? node[CHILDREN]
+      ? node[CHILDREN].filter(function(child) {
+        return !child.hasOwnProperty(COMPLETED);
+      })
       : node[CHILDREN] = [];
 
     while (length--) {
@@ -22,7 +25,7 @@ define([
     }
 
     return when.map(children, function(child) {
-      return method.apply(child[COMPONENT](), args);
+      return method.apply(child[COMPONENT](), args)
     });
   };
 });
