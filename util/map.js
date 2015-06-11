@@ -4,6 +4,7 @@ define([
 ], function(config, when) {
   "use strict";
 
+  var UNDEFINED;
   var NODE = config.node;
   var CHILDREN = config.children;
   var COMPONENT = config.component;
@@ -14,7 +15,7 @@ define([
     var node = me[NODE];
     var children = node.hasOwnProperty(CHILDREN)
       ? node[CHILDREN].filter(function(child) {
-        return !child.hasOwnProperty(COMPLETED);
+        return child !== UNDEFINED && !child.hasOwnProperty(COMPLETED);
       })
       : node[CHILDREN] = [];
     var length = arguments.length - 1;
