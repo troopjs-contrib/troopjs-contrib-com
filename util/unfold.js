@@ -12,14 +12,17 @@ define([
   var COMPONENT = config.component;
 
   return function(method) {
-    var args = arguments;
     var me = this;
     var node = me[NODE];
-
-    // Get or create `children`
     var children = node.hasOwnProperty(CHILDREN)
       ? node[CHILDREN]
       : node[CHILDREN] = [];
+    var length = arguments[LENGTH] - 1;
+    var args = new Array(length);
+
+    while (length--) {
+      args[length] = arguments[length + 1];
+    }
 
     return when.unfold(function(index) {
       var child;
