@@ -17,11 +17,11 @@ define([
     var children = node.hasOwnProperty(CHILDREN)
       ? node[CHILDREN]
       : node[CHILDREN] = [];
-    var length = arguments[LENGTH];
-    var args = new Array(length);
+    var length = arguments.length;
+    var args = new Array(length - 1);
 
-    while (length--) {
-      args[length] = arguments[length + 1];
+    while (length-- > 1) {
+      args[length - 1] = arguments[length];
     }
 
     return when.unfold(function(index) {
